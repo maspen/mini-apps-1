@@ -1,0 +1,43 @@
+<!Doctype HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Grocery List</title>
+  <!-- <link rel="stylesheet" type="text/css" href="styles/styles.css"> -->
+</head>
+<body>
+  <div id="app">
+    <img src="public/images/2000px-Tic_tac_toe.svg.png">
+      <h1>Tick Tack Toe</h1>
+      <div>
+        <button id="myButton">Reset</button>
+      </div>
+      <div>
+        <table border="1" width="300" height="300">
+          <tr>
+            <td id="0" onClick="clickEvent(this.id);">0</td>
+            <td id="1" onClick="clickEvent(this.id);">1</td>
+            <td id="2" onClick="clickEvent(this.id);">2</td>
+          </tr>
+          <tr>
+            <td id="3" onClick="clickEvent(this.id);">3</td>
+            <td id="4" onClick="clickEvent(this.id);">4</td>
+            <td id="5" onClick="clickEvent(this.id);">5</td>
+          </tr>
+          <tr>
+            <td id="6" onClick="clickEvent(this.id);">6</td>
+            <td id="7" onClick="clickEvent(this.id);">7</td>
+            <td id="8" onClick="clickEvent(this.id);">8</td>
+          </tr>
+        </table>
+      </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      console.log("DOM fully loaded and parsed");
+    });
+  </script>
+  <script type="text/javascript" src="app.js"></script>
+</body>
+</html>
+
