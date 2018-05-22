@@ -13,19 +13,7 @@
 
 var state = [ new Array(3),
 						  new Array(3),
-						  new Array(3) ];
-
-// var mapping = {
-// 	0: this.state[0][0],
-// 	1: this.state[0][1],
-// 	2: this.state[0][2],
-// 	3: this.state[1][0],
-// 	4: this.state[1][1],
-// 	5: this.state[1][2],
-// 	6: this.state[2][0],
-// 	7: this.state[2][1],
-// 	8: this.state[2][2],
-// };
+						  new Array(3) ]
 var mapping = {
 	0: [0, 0],
 	1: [0, 1],
@@ -43,7 +31,7 @@ var o = 'O';
 var firstMove = true;
 var previous;
 
-var clickEvent = function(id) {
+var cellClickEvent = function(id) {
 	// console.log("clickEvent", id);
 	if (firstMove) {
 		setX(id);
@@ -59,25 +47,40 @@ var clickEvent = function(id) {
 }
 
 var setX = function(id) {
-	// TODO: check is this has alreaddy been set
-	var element = document.getElementById(id);
-	element.innerHTML = x;
+	if(!isOccupied(id)) {
+		var element = document.getElementById(id);
+		element.innerHTML = x;
 
-	setState(id, x);
+		setState(id, x);
+	}
 }
 
 var setO = function(id) {
-	// TODO: check is this has alreaddy been set
-	var element = document.getElementById(id);
-	element.innerHTML = o;
+	if(!isOccupied(id)) {
+		var element = document.getElementById(id);
+		element.innerHTML = o;
 
-	setState(id, o);
+		setState(id, o);
+	}
+}
+
+var isOccupied = function(id) {
+	var stateLocationArray = mapping[id];
+	// eg [0,1]
+	var includes = state[stateLocationArray[0]][stateLocationArray[1]];
+
+	if(includes) {
+		console.log(id + ' is occupied');
+		return true;
+	}
+	console.log(id + ' is not occupied');
+	return false;
 }
 
 var setState = function(id, letter) {
-
 	var stateLocationArray = mapping[id];
 	// [0, 1]
 	state[stateLocationArray[0]][stateLocationArray[1]] = letter;
-	// check for winner
+
+	// TODO: check for winner
 }
