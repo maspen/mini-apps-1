@@ -30,15 +30,8 @@ var x = 'X';
 var o = 'O';
 var firstMove = true;
 var previous;
-// var currentPlayer = 'X';
-
-// var setCurrent = function() {
-// 	var curr = document.getElementById('current');
-// 	curr.innerHTML = currentPlayer;
-// }
 
 var cellClickEvent = function(id) {
-	// console.log("clickEvent", id);
 	if (firstMove) {
 		setX(id);
 		firstMove = false;
@@ -56,7 +49,6 @@ var setX = function(id) {
 	if(!isOccupied(id)) {
 		var element = document.getElementById(id);
 		element.innerHTML = x;
-
 		setState(id, x);
 	}
 }
@@ -65,27 +57,22 @@ var setO = function(id) {
 	if(!isOccupied(id)) {
 		var element = document.getElementById(id);
 		element.innerHTML = o;
-
 		setState(id, o);
 	}
 }
 
 var isOccupied = function(id) {
-	var stateLocationArray = mapping[id];
-	// eg [0,1]
+	var stateLocationArray = mapping[id]; // eg [0,1]
 	var includes = state[stateLocationArray[0]][stateLocationArray[1]];
 
 	if(includes) {
-		console.log(id + ' is occupied');
 		return true;
 	}
-	console.log(id + ' is not occupied');
 	return false;
 }
 
 var setState = function(id, letter) {
-	var stateLocationArray = mapping[id];
-	// [0, 1]
+	var stateLocationArray = mapping[id];// eg [0,1]
 	state[stateLocationArray[0]][stateLocationArray[1]] = letter;
 
 	checkForWinner();
@@ -93,30 +80,32 @@ var setState = function(id, letter) {
 
 var checkForWinner = function() {
 
-// look for 3 in a row,
-var rowsWinner = checkRows();
-if (rowsWinner) {
-	console.log('rowsWinner', rowsWinner);
-	alert('winner is ' + rowsWinner);
-}
-// either diagonally,
-var majDiagonal = checkMajorDiagonal();
-if(majDiagonal) {
-	console.log('checkMajorDiagonal', majDiagonal);
-	alert('winner is ' + majDiagonal);
-}
-var minorDiagonal = checkMinorDiagonal()
-if(minorDiagonal) {
-	alert('winner is ' + minorDiagonal);
-}
-// horizontally
-var horizontal = checkColumns();
-if(horizontal) {
-	alert('winner is ' + horizontal);
-}
-// vertically. 
-// check to see if the board is full.
-
+	// look for 3 in a row,
+	var rowsWinner = checkRows();
+	if (rowsWinner) {
+		console.log('rowsWinner', rowsWinner);
+		alert('winner is ' + rowsWinner);
+	}
+	// either diagonally,
+	var majDiagonal = checkMajorDiagonal();
+	if(majDiagonal) {
+		console.log('checkMajorDiagonal', majDiagonal);
+		alert('winner is ' + majDiagonal);
+	}
+	var minorDiagonal = checkMinorDiagonal()
+	if(minorDiagonal) {
+		alert('winner is ' + minorDiagonal);
+	}
+	// horizontally
+	var columns = checkColumns();
+	if(columns) {
+		alert('winner is ' + columns);
+	}
+	// check to see if the board is full.
+	var isFull = isBoardFull();
+	if(isFull) {
+		alert('the board is full');
+	}
 };
 
 var checkRows = function() {
@@ -173,8 +162,6 @@ var checkMinorDiagonal = function() {
 	var one = state[1][1];
 	var two = state[2][0];
 
-	console.log(zero + ' ' + one + ' ' + two);
-
 	if(zero === one && one === two) {
 		return zero;
 	}
@@ -194,19 +181,34 @@ var checkColumns= function() {
 	if(col2) {
 		return col2;
 	}
-	false;
+	return null;
 }
 
 var checkColumn = function(col) {
 	var xCount = 0;
 	var oCount = 0;
 
-	var zero = state[col][1];
-	var one = state[col][2];
-	var two = state[col][3];
+	var zero = state[0][col];
+	var one = state[1][col];
+	var two = state[2][col];
+
+console.log(zero + ' ' + one + ' ' + two);
 
 	if(zero === one && one === two) {
 		return zero;
 	}
 	return null;
+}
+
+var isBoardFull = function() {
+	var occupied = 0;
+	state.forEach(function(row){
+		row.forEach(function(col){
+			occupied += 1;
+		})
+	})
+	if(occupied === 9) {
+		return true;
+	}
+	return false;
 }
