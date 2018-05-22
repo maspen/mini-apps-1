@@ -31,6 +31,17 @@ var o = 'O';
 var firstMove = true;
 var previous;
 
+var resetBoard = function() {
+	console.log('resetBoard')
+	for(let key in mapping) {
+		var element = document.getElementById(key);
+		console.log('element with id ', key);
+		element.innerHtml = key;
+	}
+	// reload the page
+	location.reload();
+}
+
 var cellClickEvent = function(id) {
 	if (firstMove) {
 		setX(id);
@@ -50,6 +61,8 @@ var setX = function(id) {
 		var element = document.getElementById(id);
 		element.innerHTML = x;
 		setState(id, x);
+	} else {
+		alert('square ' + id + ' is occupied, try a different move');
 	}
 }
 
@@ -58,6 +71,8 @@ var setO = function(id) {
 		var element = document.getElementById(id);
 		element.innerHTML = o;
 		setState(id, o);
+	} else {
+		alert('square ' + id + ' is occupied, try a different move');
 	}
 }
 
@@ -79,7 +94,6 @@ var setState = function(id, letter) {
 }
 
 var checkForWinner = function() {
-
 	// look for 3 in a row,
 	var rowsWinner = checkRows();
 	if (rowsWinner) {
@@ -185,14 +199,9 @@ var checkColumns= function() {
 }
 
 var checkColumn = function(col) {
-	var xCount = 0;
-	var oCount = 0;
-
 	var zero = state[0][col];
 	var one = state[1][col];
 	var two = state[2][col];
-
-console.log(zero + ' ' + one + ' ' + two);
 
 	if(zero === one && one === two) {
 		return zero;
