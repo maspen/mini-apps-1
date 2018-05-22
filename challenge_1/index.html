@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Grocery List</title>
-  <!-- <link rel="stylesheet" type="text/css" href="styles/styles.css"> -->
+  <title>Tick Tack Toe</title>
+  <link rel="stylesheet" type="text/css" href="public/styles/styles.css">
 </head>
 <body>
   <div id="app">
@@ -13,24 +13,24 @@
         <button id="myButton" onClick="resetBoard();">Reset</button>
       </div>
       <div>
-        <h2 id="current"></h2>
+        <p id="winner">&nbsp;</p>
       </div>
       <div>
         <table border="1" width="300" height="300">
           <tr>
-            <td id="0" onClick="cellClickEvent(this.id);">0</td>
-            <td id="1" onClick="cellClickEvent(this.id);">1</td>
-            <td id="2" onClick="cellClickEvent(this.id);">2</td>
+            <td colspan="33%" id="0" onClick="cellClickEvent(this.id);">&nbsp;</td>
+            <td colspan="33%" id="1" onClick="cellClickEvent(this.id);">&nbsp;</td>
+            <td colspan="33%" id="2" onClick="cellClickEvent(this.id);">&nbsp;</td>
           </tr>
           <tr>
-            <td id="3" onClick="cellClickEvent(this.id);">3</td>
-            <td id="4" onClick="cellClickEvent(this.id);">4</td>
-            <td id="5" onClick="cellClickEvent(this.id);">5</td>
+            <td colspan="33%" id="3" onClick="cellClickEvent(this.id);">&nbsp;</td>
+            <td colspan="33%" id="4" onClick="cellClickEvent(this.id);">&nbsp;</td>
+            <td colspan="33%" id="5" onClick="cellClickEvent(this.id);">&nbsp;</td>
           </tr>
           <tr>
-            <td id="6" onClick="cellClickEvent(this.id);">6</td>
-            <td id="7" onClick="cellClickEvent(this.id);">7</td>
-            <td id="8" onClick="cellClickEvent(this.id);">8</td>
+            <td colspan="33%" id="6" onClick="cellClickEvent(this.id);">&nbsp;</td>
+            <td colspan="33%" id="7" onClick="cellClickEvent(this.id);">&nbsp;</td>
+            <td colspan="33%" id="8" onClick="cellClickEvent(this.id);">&nbsp;</td>
           </tr>
         </table>
       </div>

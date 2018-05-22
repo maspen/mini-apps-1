@@ -1,10 +1,3 @@
-// var express = require('express');
-// var app = express();
-
-// create model for data structure
-//  array of arrays
-// listen for click events on table
-
 /*
 	[[0,1,2],
 	 [3,4,5],
@@ -30,16 +23,21 @@ var x = 'X';
 var o = 'O';
 var firstMove = true;
 var previous;
+var previousWinner;
 
 var resetBoard = function() {
-	console.log('resetBoard')
 	for(let key in mapping) {
 		var element = document.getElementById(key);
-		console.log('element with id ', key);
 		element.innerHtml = key;
 	}
+	firstMove = true;
+
 	// reload the page
 	location.reload();
+}
+
+var toggleStarter = function() {
+// TODO: let the loose start the next round
 }
 
 var cellClickEvent = function(id) {
@@ -62,7 +60,7 @@ var setX = function(id) {
 		element.innerHTML = x;
 		setState(id, x);
 	} else {
-		alert('square ' + id + ' is occupied, try a different move');
+		alert('square ' + id + ' is occupied, try a different square');
 	}
 }
 
@@ -72,7 +70,7 @@ var setO = function(id) {
 		element.innerHTML = o;
 		setState(id, o);
 	} else {
-		alert('square ' + id + ' is occupied, try a different move');
+		alert('square ' + id + ' is occupied, try a different square');
 	}
 }
 
@@ -93,27 +91,32 @@ var setState = function(id, letter) {
 	checkForWinner();
 }
 
+var displayWinner = function(winner) {
+	var element = document.getElementById("winner");
+	element.innerHTML = 'The winner is ' + winner;
+
+	previousWinner = winner;
+}
+
 var checkForWinner = function() {
 	// look for 3 in a row,
 	var rowsWinner = checkRows();
 	if (rowsWinner) {
-		console.log('rowsWinner', rowsWinner);
-		alert('winner is ' + rowsWinner);
+		displayWinner(rowsWinner);
 	}
 	// either diagonally,
 	var majDiagonal = checkMajorDiagonal();
 	if(majDiagonal) {
-		console.log('checkMajorDiagonal', majDiagonal);
-		alert('winner is ' + majDiagonal);
+		displayWinner(majDiagonal);
 	}
 	var minorDiagonal = checkMinorDiagonal()
 	if(minorDiagonal) {
-		alert('winner is ' + minorDiagonal);
+		displayWinner(minorDiagonal);
 	}
 	// horizontally
 	var columns = checkColumns();
 	if(columns) {
-		alert('winner is ' + columns);
+		displayWinner(columns);
 	}
 	// check to see if the board is full.
 	var isFull = isBoardFull();
