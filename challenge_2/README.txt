@@ -7,6 +7,11 @@ nodemon server.js
 
 npm install body-parser --save
 
+when running JS from command line, needd to
+install jquery:
+
+npm install jquery --save
+
 in server.js:
 const express = require('express');
 const http = require('http');
