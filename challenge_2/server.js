@@ -23,41 +23,21 @@ app.post('/json', function(req, res){
 	console.log('got POST');
 	console.log('req.body', req.body);
 
-	// app.js is expecting json so have to stringify
-	res.send(JSON.stringify('Hello World'));
+	// req.body will contain json 'object'
+	parserJsonToCSVStringCallback(req.body, res, sendCSVToClient);
 });
 
-app.post('/csv', function(req, res){
-	console.log('got POST csv');
-
-	getCsv(jsonFilePath, getCsvCallback);
-
-	// app.js is expecting json so have to stringify
-	res.send(JSON.stringify('Hello World from cvs'));
-});
-
-var getCsv = (jsonFilePath, callback) => {
-	console.log('inside jsonGet');
-
-	fs.readFile(jsonFilePath, (err, data) => {
-	  if (err) {
-	  	callback(err, null);
-	  };
-	  callback(null, JSON.parse(data));
-	});
+var sendCSVToClient = (csvString, res) => {
+	console.log('creating send request');
+	res.send(JSON.stringify(csvString));
 };
 
-/** ---- json parsing ----- */
-var getCsvCallback = function(error, data) {
-	if (error) {
-		console.log('getCsvCallback error', error);
-		return;
-	}
-
-	createCSVString(data);
+var parserJsonToCSVStringCallback = (json, res, callback) => {
+	createCSVString(json, res, callback);
 }
 
-var createCSVString = (object) => {
+/** ---- json parsing ----- */
+var createCSVString = (object, res, callback) => {
 	// get heading
 	var headingArr = Object.getOwnPropertyNames(object);
 /*
@@ -124,16 +104,9 @@ Beth Jr.,Johnson,San Mateo,Pacifica,Manager,2900000
 Smitty,Won,San Mateo,Redwood City,Sales Person,4800000
 Allen,Price,San Mateo,Burlingame,Sales Person,2500000
 Beth,Johnson,San Francisco,San Francisco,Broker/Sales Person,7500000
-*/	
+*/
+	callback(csv, res);
 }
-
-var parserCallback = (error, data) => {
-	if(error) {
-		console.log('parserCallback error', '[' +error + ']');
-		return;
-	}
-	console.log('parserCallback data', data);
-};
 
 http.createServer(app).listen(3000);
 console.log('Example app listening on port 3000!')
