@@ -3,6 +3,7 @@ class App extends React.Component {
     super(props, context);
 
     this.handleClickNext = this.handleClickNext.bind(this);
+    this.returnToHomepage = this.returnToHomepage.bind(this);
     this.transition = this.transition.bind(this);
     this.nextPage = this.nextPage.bind(this);
 
@@ -33,7 +34,7 @@ class App extends React.Component {
   	} else if (id === 4) {
   		return (
 				<div><Header />
-				<h2>Confirmation</h2></div>
+				<Confirmation backToHomepage={this.returnToHomepage.bind(this)} /></div>
   		);  		
   	}
   };
@@ -49,13 +50,16 @@ class App extends React.Component {
   	this.setState({currentPage: nextState});
   }
 
+  returnToHomepage() {
+  	this.setState({currentPage: 0});
+  }
+
   render() {
   	console.log('render currentPage', this.state.currentPage);
   	return this.transition(this.state.currentPage);
   };
 };
 
-// 0 - checkout -- just a button
 class Header extends React.Component {
    render() {
       return (
@@ -66,7 +70,6 @@ class Header extends React.Component {
    }
 }
 
-// 1
 class UserInformation extends React.Component {
 	constructor(props, context) {
   	super(props, context);
@@ -75,6 +78,7 @@ class UserInformation extends React.Component {
   	this.handleChangeName = this.handleChangeName.bind(this);
   	this.handleChangeEmail = this.handleChangeEmail.bind(this);
   	this.handleChangePass = this.handleChangePass.bind(this);
+  	this.post = this.post.bind(this);
 
   	this.state = {
   		name: '',
@@ -89,9 +93,24 @@ class UserInformation extends React.Component {
   	// call App to increment state for page transition
   	this.props.changePage();
 
-  	// TODO: persiste to db
-  	// TODO: transition to ShiptTo
+  	this.post();
   }
+
+  post() {
+		var thisState = this.state;
+		console.log('post state', JSON.stringify(thisState));
+		var url = 'http://localhost:3000/user';
+		fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(thisState),
+			headers: {
+		    'Content-Type': 'application/json'
+		  }
+		})
+		.then(res => res.json())
+		.catch(error => console.log('got error from post', error))
+		.then(response => console.log('response', response));
+	}
 
   handleChangeName(event) {
 		this.setState({name: event.target.value});
@@ -282,9 +301,24 @@ class CreditCard extends React.Component {
   }
 };
 
-// 4
 class Confirmation extends React.Component {
+	constructor(props, context) {
+  	super(props, context);
+  }
 
+  purchaseClicked(event) {
+  	event.preventDefault();
+
+  	this.props.backToHomepage();
+  }
+
+/* ! 'Purchase button', when clicked returns to homepage
+
+The final step is a confirmation page which summarizes the data 
+collected in the prior three steps. This page contains a Purchase button 
+that completes the purchase. When the purchase is complete, the user is 
+returned to the homepage.
+*/
 };
 
 ReactDOM.render(<App />, document.getElementById('app'));
