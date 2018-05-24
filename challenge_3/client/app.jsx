@@ -99,17 +99,26 @@ class UserInformation extends React.Component {
   post() {
 		var thisState = this.state;
 		console.log('post state', JSON.stringify(thisState));
+
 		var url = 'http://localhost:3000/user';
-		fetch(url, {
+		var fetched = fetch(url, {
 			method: 'POST',
 			body: JSON.stringify(thisState),
 			headers: {
 		    'Content-Type': 'application/json'
 		  }
 		})
-		.then(res => res.json())
-		.catch(error => console.log('got error from post', error))
-		.then(response => console.log('response', response));
+		.then(response => {
+			console.log('response.statusText', response.statusText);
+
+			return response.json()
+		})
+		.catch(error => {
+			console.log('error,txt', error);
+		})
+		.then(data => {
+			console.log('data', data);
+		})
 	}
 
   handleChangeName(event) {
