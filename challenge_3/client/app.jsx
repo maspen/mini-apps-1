@@ -1,53 +1,61 @@
 class App extends React.Component {
 	constructor(props, context) {
     super(props, context);
-    this.handleRequestClose = this.handleRequestClose.bind(this);
+
+    this.handleClickNext = this.handleClickNext.bind(this);
+    this.transition = this.transition.bind(this);
+    this.nextPage = this.nextPage.bind(this);
+
     this.state = {
       currentPage: 0
 		};
   }
 
-	render() {
-	  return (
-	    <div>
-	        <Header/>
-	    </div>
-	    if({this.state.currentPage === 0}) {
-	      <UserInformation/>
-	    } else if ({this.state.currentPage === 1}) {
-	    	<UserInformation/>
-	    }
-	  );
-	}
-}
+  transition(id) {
+  	if(id === 0) {
+  		return ( 
+  			<div><Header />
+  			<button onClick={this.handleClickNext}>Checkout</button></div> );
+  	} else if (id === 1) {
+  		return ( 
+  			<div><Header />
+  			<UserInformation changePage={this.nextPage.bind(this)} /></div> );
+  	} else if (id === 2) {
+  		return (
+				<div><Header />
+				<ShiptTo changePage={this.nextPage.bind(this)} /></div>
+  		);
+  	} else if (id === 3) {
+  		return (
+				<div><Header />
+				<h2>CreditCard</h2></div>
+  		);
+  	} else if (id === 4) {
+  		return (
+				<div><Header />
+				<h2>Confirmation</h2></div>
+  		);  		
+  	}
+  };
 
-// 0
-class Checkout extends React.Component {
-	constructor(props, context) {
-    super(props, context);
-  }
-}
+  handleClickNext(event) {
+  	event.preventDefault();
 
-class CheckoutBtn extends React.Component {
-	constructor(props, context) {
-  	super(props, context);
-  	this.checkoutClick = this.checkoutClick.bind(this);
-  	this.state = {};
-  }
+  	this.nextPage();
+  };
 
-  checkoutClick() {
-  	console.log('checkout clicked');
-
-  	// TODO: transition to UserInformation
+  nextPage() {
+  	var nextState = this.state.currentPage + 1;
+  	this.setState({currentPage: nextState});
   }
 
   render() {
-  	return (
-  		<button type={this.props.behavior} onClick={this.checkoutClick}>Checkout</button>
-  	);
-  }
-}
+  	console.log('render currentPage', this.state.currentPage);
+  	return this.transition(this.state.currentPage);
+  };
+};
 
+// 0 - checkout -- just a button
 class Header extends React.Component {
    render() {
       return (
@@ -78,6 +86,9 @@ class UserInformation extends React.Component {
   handleFormSubmit(event) {
   	event.preventDefault();
 
+  	// call App to increment state for page transition
+  	this.props.changePage();
+
   	// TODO: persiste to db
   	// TODO: transition to ShiptTo
   }
@@ -85,11 +96,9 @@ class UserInformation extends React.Component {
   handleChangeName(event) {
 		this.setState({name: event.target.value});
   }
-
   handleChangeEmail(event) {
   	this.setState({email: event.target.value});
   }
-
   handleChangePass(event) {
   	this.setState({password: event.target.value});
   }
@@ -115,22 +124,103 @@ class UserInformation extends React.Component {
 			</form>
   	);
   }
-}
+};
 
-// 2
 class ShiptTo extends React.Component {
+	constructor(props, context) {
+  	super(props, context);
 
-}
+  	this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  	this.handleChangeLine1 = this.handleChangeLine1.bind(this);
+  	this.handleChangeLine2 = this.handleChangeLine2.bind(this);
+  	this.handleChangeCity = this.handleChangeCity.bind(this);
+  	this.handleChangeSate = this.handleChangeSate.bind(this);
+  	this.handleChangeZip = this.handleChangeZip.bind(this);
+  	this.handleChangePhone = this.handleChangePhone.bind(this);
+
+  	this.state = {
+  		line1: '',
+  		line2: '',
+  		city: '',
+  		state: '',
+  		zip: '',
+  		phone: ''
+  	};
+  }
+
+  handleFormSubmit(event) {
+  	event.preventDefault();
+
+  	// call App to increment state for page transition
+  	console.log('this.props ', this.props);
+  	this.props.changePage();
+
+  	// TODO: persiste to db
+  	// TODO: transition to ShiptTo
+	}
+
+	handleChangeLine1(event) {
+		this.setState({line1: event.target.value});
+	}
+	handleChangeLine2(event) {
+		this.setState({line2: event.target.value});
+	}
+	handleChangeCity(event) {
+		this.setState({city: event.target.value});
+	}
+	handleChangeSate(event) {
+		this.setState({state: event.target.value});
+	}
+	handleChangeZip(event) {
+		this.setState({zip: event.target.value});
+	}
+	handleChangePhone(event) {
+		this.setState({phone: event.target.value});
+	}
+
+  render() {
+  	return (
+  		<form onSubmit={this.handleFormSubmit}>
+			  <div>
+			    <label>Line 1:</label>
+			    <input type="text" onChange={this.handleChangeLine1}></input>
+			  </div>
+			  <div>
+			    <label>Line 2:</label>
+			    <input type="text" onChange={this.handleChangeLine2}></input>
+			  </div>
+			  <div>
+			    <label>City:</label>
+			    <input type="text" onChange={this.handleChangeCity}></input>
+			  </div>
+			  <div>
+			    <label>State:</label>
+			    <input type="text" onChange={this.handleChangeSate}></input>
+			  </div>
+			  <div>
+			    <label>Zip:</label>
+			    <input type="text" onChange={this.handleChangeZip}></input>
+			  </div>
+			  <div>
+			    <label>Phone:</label>
+			    <input type="text" onChange={this.handleChangePhone}></input>
+			  </div>			  		  
+			  <div>
+			  	<input type="submit" value="Next"></input>
+			  </div>
+			</form>
+  	);
+  }
+};
 
 // 3
 class CreditCard extends React.Component {
 
-}
+};
 
 // 4
 class Confirmation extends React.Component {
 
-}
+};
 
 ReactDOM.render(<App />, document.getElementById('app'));
-
