@@ -28,7 +28,7 @@ class App extends React.Component {
   	} else if (id === 3) {
   		return (
 				<div><Header />
-				<h2>CreditCard</h2></div>
+				<CreditCard changePage={this.nextPage.bind(this)} /></div>
   		);
   	} else if (id === 4) {
   		return (
@@ -213,9 +213,73 @@ class ShiptTo extends React.Component {
   }
 };
 
-// 3
 class CreditCard extends React.Component {
+	constructor(props, context) {
+  	super(props, context);
 
+  	this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  	this.handleChangeCCNumber = this.handleChangeCCNumber.bind(this);
+  	this.handleChangeExpirty = this.handleChangeExpirty.bind(this);
+  	this.handleChangeCVV = this.handleChangeCVV.bind(this);
+  	this.handleChangeZip = this. handleChangeZip.bind(this);
+
+  	this.state = {
+  		ccNum: '',
+  		expiry: '',
+  		cvv: '',
+  		zip: ''
+  	}
+  }
+
+  handleFormSubmit(event) {
+  	event.preventDefault();
+
+  	// call App to increment state for page transition
+  	console.log('this.props ', this.props);
+  	this.props.changePage();
+
+  	// TODO: persiste to db
+  	// TODO: transition to ShiptTo
+	}
+
+	handleChangeCCNumber(event) {
+		this.setState({ccNum: event.target.value });
+	}
+	handleChangeExpirty(event) {
+		this.setState({expiry: event.target.value });
+	}
+	handleChangeCVV(event) {
+		this.setState({cvv: event.target.value });
+	}
+	handleChangeZip(event) {
+		this.setState({zip: event.target.value });
+	}
+
+  render() {
+  	return (
+  		<form onSubmit={this.handleFormSubmit}>
+			  <div>
+			    <label>Credit Card Number:</label>
+			    <input type="text" onChange={this.handleChangeCCNumber}></input>
+			  </div>
+			  <div>
+			    <label>Excpiration Date:</label>
+			    <input type="text" onChange={this.handleChangeExpirty}></input>
+			  </div>
+			  <div>
+			    <label>CVV code:</label>
+			    <input type="text" onChange={this.handleChangeCVV}></input>
+			  </div>
+			  <div>
+			    <label>Zip:</label>
+			    <input type="text" onChange={this.handleChangeZip}></input>
+			  </div>
+			  <div>
+			  	<input type="submit" value="Next"></input>
+			  </div>
+			</form>  		
+  	);
+  }
 };
 
 // 4
